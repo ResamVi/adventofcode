@@ -19,3 +19,9 @@ Day 2: Rock, Paper, Scissors
 |:---|---:|---:|---:|---:|
 | `./rock_paper_scissors_go` | 0.9 ± 0.1 | 0.7 | 1.9 | 1.52 ± 0.35 |
 | `./rock_paper_scissors_rust` | 0.6 ± 0.1 | 0.5 | 1.7 | 1.00 |
+
+Day 3: Rucksack Reorganization
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `./rucksack_reorganization_go` | 0.7 ± 0.1 | 0.6 | 1.6 | 1.41 ± 0.27 |
+| `./rucksack_reorganization_rust` | 0.5 ± 0.1 | 0.5 | 1.1 | 1.00 |
