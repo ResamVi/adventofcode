@@ -25,3 +25,9 @@ Day 3: Rucksack Reorganization
 |:---|---:|---:|---:|---:|
 | `./rucksack_reorganization_go` | 0.7 ± 0.1 | 0.6 | 1.6 | 1.41 ± 0.27 |
 | `./rucksack_reorganization_rust` | 0.5 ± 0.1 | 0.5 | 1.1 | 1.00 |
+
+Day 4: Camp Cleanup
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `./camp_cleanup_go` | 0.7 ± 0.1 | 0.6 | 1.7 | 1.46 ± 0.31 |
+| `./camp_cleanup_rust` | 0.5 ± 0.1 | 0.4 | 1.6 | 1.00 |
