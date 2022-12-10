@@ -31,3 +31,11 @@ Day 4: Camp Cleanup
 |:---|---:|---:|---:|---:|
 | `./camp_cleanup_go` | 0.7 ± 0.1 | 0.6 | 1.7 | 1.46 ± 0.31 |
 | `./camp_cleanup_rust` | 0.5 ± 0.1 | 0.4 | 1.6 | 1.00 |
+
+Day 5: Skipped for now
+
+Day 6: Tuning Trouble
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `./tuning_trouble_go` | 0.9 ± 0.2 | 0.7 | 6.3 | 1.86 ± 0.51 |
+| `./tuning_trouble_rust` | 0.5 ± 0.1 | 0.4 | 1.4 | 1.00 |
