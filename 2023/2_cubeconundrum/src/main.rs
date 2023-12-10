@@ -34,7 +34,7 @@ impl FromStr for Game {
 }
 
 
-#[derive(std::fmt::Debug)]
+#[derive(std::fmt::Debug, Clone)]
 struct Subset(i32, i32, i32);
 
 impl FromStr for Subset {
@@ -60,6 +60,7 @@ impl FromStr for Subset {
     }
 }
 
+// Exercise 1
 fn is_possible(game: &Game) -> bool {
     for subset in &game.subsets {
         if subset.0 > 12 || subset.1 > 13 || subset.2 > 14 {
@@ -69,16 +70,32 @@ fn is_possible(game: &Game) -> bool {
     return true;
 }
 
+// Exercise 2
+fn power(game: &Game) -> i32 {
+    let mut reds: Vec<i32> = vec!();
+    let mut greens: Vec<i32> = vec!();
+    let mut blues: Vec<i32> = vec!();
+
+    for Subset(r, g, b) in game.subsets.clone().into_iter() {
+        reds.push(r);
+        greens.push(g);
+        blues.push(b);
+    }
+
+    let red = reds.iter().filter(|&&v| v != 0).max().unwrap();
+    let green = greens.iter().filter(|&&v| v != 0).max().unwrap();
+    let blue = blues.iter().filter(|&&v| v != 0).max().unwrap();
+
+    return *red * *green * *blue;
+}
+
 fn main() {
-    // First
     let file = fs::read_to_string("file.txt").unwrap();
 
     let mut sum = 0;
     for line in file.lines() {
         let game = line.parse::<Game>().unwrap();
-        if is_possible(&game) {
-            sum += game.id;
-        }
+        sum += power(&game);
     }
 
     println!("{sum}");
