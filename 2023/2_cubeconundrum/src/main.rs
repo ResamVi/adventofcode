@@ -1,42 +1,85 @@
 use std::{fs, str::FromStr};
 use regex::Regex;
+use std::string::ParseError;
+use lazy_static::lazy_static;
 
+lazy_static! {
+    static ref GAME: Regex = Regex::new(r"Game ([0-9]+): (.+)$").unwrap();
+
+    static ref RED: Regex = Regex::new(r"([0-9]+) red").unwrap();
+    static ref GREEN: Regex = Regex::new(r"([0-9]+) green").unwrap();
+    static ref BLUE: Regex = Regex::new(r"([0-9]+) blue").unwrap();
+}
+
+#[derive(std::fmt::Debug)]
 struct Game {
-    id: i8,
+    id: i32,
     subsets: Vec<Subset>
 }
 
-struct Subset(i8, i8, i8);
+impl FromStr for Game {
+    type Err = ParseError;
 
-enum Color {
-    Red,
-    Green,
-    Blue
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let id = GAME.captures(s).unwrap().get(1).unwrap().as_str().parse::<i32>().unwrap_or(0);
+        let subsets = GAME.captures(s).unwrap().get(2).unwrap().as_str();
+
+        let mut result: Vec<Subset> = vec!();
+        for subset in subsets.split("; ").into_iter() {
+            result.push(subset.parse::<Subset>().unwrap());
+        }
+
+        Ok(Game { id, subsets: result })
+    }
 }
 
-// impl FromStr for Game {
-//     type Err;
-//
-//     fn from_str(s: &str) -> Result<Self, Self::Err> {
-//         todo!()
-//     }
-// }
 
+#[derive(std::fmt::Debug)]
+struct Subset(i32, i32, i32);
+
+impl FromStr for Subset {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let red_count = match RED.captures(s) {
+            Some(cap) => cap.get(1).unwrap().as_str().parse::<i32>().unwrap_or(0),
+            None => 0,
+        };
+
+        let green_count = match GREEN.captures(s) {
+            Some(cap) => cap.get(1).unwrap().as_str().parse::<i32>().unwrap_or(0),
+            None => 0,
+        };
+
+        let blue_count = match BLUE.captures(s) {
+            Some(cap) => cap.get(1).unwrap().as_str().parse::<i32>().unwrap_or(0),
+            None => 0,
+        };
+
+        return Ok(Subset(red_count, green_count, blue_count))
+    }
+}
+
+fn is_possible(game: &Game) -> bool {
+    for subset in &game.subsets {
+        if subset.0 > 12 || subset.1 > 13 || subset.2 > 14 {
+            return false
+        }
+    }
+    return true;
+}
 
 fn main() {
-    // let contents = fs::read_to_string("file.txt").expect("to have a file");
-    //
-    // for line in contents.split("\n").into_iter() {
-    //     println!("Content: {line}");
-    // }
+    // First
+    let file = fs::read_to_string("file.txt").unwrap();
 
-    let re = Regex::new(r"Game ([0-9]+): (.+)$").unwrap();
-    let hay = "Game 1: 2 red, 2 green; 1 red, 1 green, 2 blue; 3 blue, 3 red, 3 green; 1 blue, 3 green, 7 red; 5 red, 3 green, 1 blue";
-
-    let mut results = vec![];
-    for (_, [path, lineno, line]) in re.captures_iter(hay).map(|c| c.extract()) {
-        results.push((path, lineno, line));
+    let mut sum = 0;
+    for line in file.lines() {
+        let game = line.parse::<Game>().unwrap();
+        if is_possible(&game) {
+            sum += game.id;
+        }
     }
 
-    println!("{:?}", results);
+    println!("{sum}");
 }
